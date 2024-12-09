@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    environment:
+      POSTGRES_DB: playbook_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5432:5432'
+
+  depth-chart-manager:
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: depth-chart-manager
+    image: depth-chart-manager
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/playbook_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    ports:
+      - '8081:8080'
+
