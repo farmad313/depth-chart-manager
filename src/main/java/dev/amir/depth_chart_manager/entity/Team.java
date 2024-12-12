@@ -1,9 +1,14 @@
 package dev.amir.depth_chart_manager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -11,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Team {
     @Version
+    @EqualsAndHashCode.Exclude
     private int version;
 
     @Id
@@ -19,9 +25,12 @@ public class Team {
 
     private String name;
 
-    private String depthChart;
-
     @ManyToOne
     @JoinColumn(name = "sport_id", referencedColumnName = "id")
     private Sport sport;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<DepthChart> depthCharts;
+
 }

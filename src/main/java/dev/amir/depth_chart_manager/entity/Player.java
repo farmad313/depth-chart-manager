@@ -4,6 +4,7 @@ package dev.amir.depth_chart_manager.entity;
 import dev.amir.depth_chart_manager.model.enums.Position;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Player {
     @Version
+    @EqualsAndHashCode.Exclude
     private int version;
 
     @Id
